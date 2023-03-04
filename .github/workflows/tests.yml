@@ -56,16 +56,25 @@ jobs:
         nuget install NUnit.Runners -Version 3.12.0 -OutputDirectory nunit
         nunit/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe Duplicati/UnitTest/bin/Release/Duplicati.UnitTest.dll /test:Duplicati.UnitTest.BackendToolTests.Get
 
-    - name: Build (Windows)
+    - name: Build installers (Windows)
       if: matrix.os == 'windows-latest'
       run: .\\Installer\\Windows\\artifact_win.bat
 
+    - name: Build installers (Deb)
+      if: matrix.os == 'ubuntu-latest'
+      run: |
+          sudo apt install debhelper
+          Installer/debian/artifact_deb.sh
+          
+    - name: Build installers (OSX)
+      if: matrix.os == 'macos-latest'
+      run: Installer/OSX/artifact_mac.sh
+
     - name: Upload build results
-      if: matrix.os == 'windows-latest'
       uses: actions/upload-artifact@v3
       with:
         retention-days: 5
-        name: build-results
+        name: build-results-${{ matrix.os }}
         path: ~/artifacts/**/*
 
   ui_tests:

@@ -48,13 +48,13 @@ jobs:
       if: matrix.os != 'windows-latest'
       run: |
         nuget install NUnit.Runners -Version 3.12.0 -OutputDirectory nunit
-        mono nunit/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe Duplicati/UnitTest/bin/Release/Duplicati.UnitTest.dll --test=Duplicati.UnitTest.BackendToolTests.Get
+        mono nunit/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe Duplicati/UnitTest/bin/Release/Duplicati.UnitTest.dll
 
     - name: Run Unit Tests (Windows)
       if: matrix.os == 'windows-latest'
       run: |
         nuget install NUnit.Runners -Version 3.12.0 -OutputDirectory nunit
-        nunit/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe Duplicati/UnitTest/bin/Release/Duplicati.UnitTest.dll /test:Duplicati.UnitTest.BackendToolTests.Get
+        nunit/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe Duplicati/UnitTest/bin/Release/Duplicati.UnitTest.dll
 
     - name: Build installers (Windows)
       if: matrix.os == 'windows-latest'

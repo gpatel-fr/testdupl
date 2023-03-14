@@ -828,13 +828,20 @@ backupApp.service('EditUriBuiltins', function (AppService, AppUtils, SystemInfo,
 	EditUriBackendConfig.builders['storj'] = function (scope) {
         var opts = {
             'storj-auth-method': scope.storj_auth_method,
-            'storj-satellite': scope.storj_satellite,
             'storj-api-key': scope.storj_api_key,
             'storj-secret': scope.storj_secret,
             'storj-shared-access': scope.storj_shared_access,
             'storj-bucket': scope.storj_bucket,
             'storj-folder': scope.storj_folder
         };
+
+        if (scope.storj_api_key != null) {
+            if (scope.storj_satellite_custom != null) {
+                opts['storj-satellite'] = scope.storj_satellite_custom;
+            } else {
+                opts['storj-satellite'] = scope.storj_satellite;
+            }
+        }
 
         EditUriBackendConfig.merge_in_advanced_options(scope, opts);
 

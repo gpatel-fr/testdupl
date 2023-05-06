@@ -36,6 +36,7 @@ jobs:
       if: matrix.os == 'macos-latest'
       run: |
         nuget install NUnit.Runners -Version 3.12.0 -OutputDirectory nunit
+        export DEBUG_OUTPUT=1
         mono nunit/NUnit.ConsoleRunner.3.12.0/tools/nunit3-console.exe Duplicati/UnitTest/bin/Release/Duplicati.UnitTest.dll --labels=Before --test=Duplicati.UnitTest.CommandLineOperationsTests.RunCommands
 
 

@@ -88,7 +88,7 @@ namespace Duplicati.UnitTest
                 using (WebClient client = new WebClient())
                 {
                     Console.WriteLine("downloading test file to: {0}, length: {1}", destinationFilePath, wr.ContentLength);
-                    var maxAttempts = 10;
+                    var maxAttempts = 4;
                     while (maxAttempts-- > 0) {
                         client.DownloadFile(url, destinationFilePath);
                         long length = new System.IO.FileInfo(destinationFilePath).Length;
@@ -97,7 +97,7 @@ namespace Duplicati.UnitTest
                             maxAttempts = -1;
                         } else {
                             Console.WriteLine("invalid downloaded length {0}, should be {1}...", length, wr.ContentLength);
-                            System.Threading.Thread.Sleep(30000);
+                            System.Threading.Thread.Sleep(120000);
                         }
                     }
                     if (maxAttempts == 0) {

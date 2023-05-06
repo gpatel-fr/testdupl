@@ -79,7 +79,6 @@ namespace Duplicati.UnitTest
                 webRequest.IfModifiedSince = systemIO.FileGetLastWriteTimeUtc(destinationFilePath);
             }
 
-            DateTime beginTime = DateTime.Now;
             try
             {
                 // check if the file should be downloaded, exception if not
@@ -90,6 +89,7 @@ namespace Duplicati.UnitTest
                     Console.WriteLine("downloading test file to: {0}, length: {1}", destinationFilePath, wr.ContentLength);
                     var maxAttempts = 4;
                     while (maxAttempts-- > 0) {
+                        DateTime beginTime = DateTime.Now;
                         client.DownloadFile(url, destinationFilePath);
                         long length = new System.IO.FileInfo(destinationFilePath).Length;
                         Console.WriteLine("downloaded test file: {0}: length {1}, duration {2}", destinationFilePath, length, (DateTime.Now - beginTime).TotalSeconds);

@@ -378,7 +378,7 @@ namespace Duplicati.Library.Backend.AlternativeFTP
             }
         }
 
-        public void Get(string remotename, Stream output)
+        private async Task AsyncGet(string remotename, Stream output)
         {
             var ftpClient = CreateClient();
 
@@ -396,6 +396,7 @@ namespace Duplicati.Library.Backend.AlternativeFTP
                 try
                 {
                     CoreUtility.CopyStream(inputStream, output, false, _copybuffer);
+                    await ftpClient.GetReply(CancellationToken.None);
                 }
                 finally
                 {
@@ -405,12 +406,22 @@ namespace Duplicati.Library.Backend.AlternativeFTP
 
         }
 
-        public void Get(string remotename, string localname)
+        public void Get(string remotename, Stream output)
+        {
+             AsyncGet(remotename, output).Await();
+        }
+
+        private async Task AsyncGet(string remotename, string localname)
         {
             using (FileStream fs = File.Open(localname, FileMode.Create, FileAccess.Write, FileShare.None))
             {
-                Get(remotename, fs);
+                await AsyncGet(remotename, fs);
             }
+        }
+
+        public void Get(string remotename, string localname)
+        {
+            AsyncGet(remotename, localname).Await();
         }
 
         public void Delete(string remotename)
